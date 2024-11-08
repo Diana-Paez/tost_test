@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_tots/app/app.router.dart';
 import 'package:flutter_test_tots/app/app.locator.dart';
+import 'package:flutter_test_tots/app/core/theme/app_theme.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stacked_services/stacked_services.dart'; // Importamos el archivo del locator
 
@@ -17,12 +18,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme().getTheme(),
       title: 'Material App',
-      navigatorKey: GetIt.instance<NavigationService>()
-          .navigatorKey, // Configura navigatorKey
-      initialRoute: AppRouter.loginRoute, // Definimos la ruta inicial
-      onGenerateRoute:
-          AppRouter.generateRoute, // Configuración de rutas con auto_route
+      navigatorKey: GetIt.instance<NavigationService>().navigatorKey,
+      initialRoute: AppRouter.loginRoute,
+      onGenerateRoute: AppRouter.generateRoute,
     );
   }
 }
