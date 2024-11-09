@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter_test_tots/app/core/models/client_model.dart';
 import 'package:flutter_test_tots/app/core/services/auth_service.dart';
 import 'package:flutter_test_tots/app/core/services/clients_service.dart';
 import 'package:stacked/stacked.dart';
@@ -44,18 +45,57 @@ class ClientDetailViewModel extends BaseViewModel {
     }
   }
 
-  // Método para guardar el cliente
+// Método para guardar el cliente
   Future<bool?> saveClient() async {
+    setBusy(true);
+    try {
+      await _clientsService.requestServer(
+          token: _authService.token!,
+          firstName: _firstName,
+          lastName: _lastName,
+          email: _email,
+          photo: _photo,
+          clientMethod: ClientMethod.create);
+      return true;
+    } catch (e) {
+      log('Error al guardar el cliente: $e');
+      throw Exception('Failed to add client');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  Future<bool?> updateClient() async {
     setBusy(true);
 
     try {
-      await _clientsService.addClient(
-        token: _authService.token!,
-        firstName: _firstName,
-        lastName: _lastName,
-        email: _email,
-        photo: _photo,
-      );
+      await _clientsService.requestServer(
+          token: _authService.token!,
+          firstName: _firstName,
+          lastName: _lastName,
+          email: _email,
+          photo: _photo,
+          clientMethod: ClientMethod.update);
+      return true;
+    } catch (e) {
+      log('Error al guardar el cliente: $e');
+      throw Exception('Failed to add client');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  Future<bool?> deleleClient() async {
+    setBusy(true);
+
+    try {
+      await _clientsService.requestServer(
+          token: _authService.token!,
+          firstName: _firstName,
+          lastName: _lastName,
+          email: _email,
+          photo: _photo,
+          clientMethod: ClientMethod.delete);
       return true;
     } catch (e) {
       log('Error al guardar el cliente: $e');
