@@ -10,8 +10,6 @@ class ClientsViewModel extends BaseViewModel {
 
   final ClientsService _clientsService = GetIt.instance<ClientsService>();
 
-  bool _editButtonIsDisplayed = false;
-
   int _loadFiveClients = 0;
 
   get loadFiveClients => _loadFiveClients;
@@ -30,11 +28,16 @@ class ClientsViewModel extends BaseViewModel {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  bool get editButtonIsDisplayed => _editButtonIsDisplayed;
+  int? _selectedCardIndex; // Índice de la card seleccionada
+  int? get selectedCardIndex => _selectedCardIndex;
 
-  set editButtonIsDisplayed(bool value) {
-    _editButtonIsDisplayed = value;
-
+  // Método para seleccionar/deseleccionar una card
+  void toggleSelectedCardIndex(int index) {
+    if (_selectedCardIndex == index) {
+      _selectedCardIndex = null; // Deselecciona si es la misma
+    } else {
+      _selectedCardIndex = index; // Selecciona una nueva card
+    }
     notifyListeners();
   }
 
@@ -82,5 +85,19 @@ class ClientsViewModel extends BaseViewModel {
         (_filteredClients.length >= 5) ? 5 : _filteredClients.length;
 
     notifyListeners();
+  }
+
+  void removeClientFromList(int clientId) {
+    _clients.removeWhere((client) => client.id == clientId);
+    notifyListeners();
+  }
+
+  void updateClientInList(Client updatedClient) {
+    final index =
+        _clients.indexWhere((client) => client.id == updatedClient.id);
+    if (index != -1) {
+      _clients[index] = updatedClient;
+      notifyListeners();
+    }
   }
 }
