@@ -23,7 +23,6 @@ class ClientsView extends StatelessWidget {
           return Center(child: Text(viewModel.errorMessage!));
         }
         return Scaffold(
-          floatingActionButton: FloatingActionButton(onPressed: () {}),
           body: SingleChildScrollView(
             child: SizedBox(
               height: height + MediaQuery.of(context).viewPadding.top,
@@ -168,12 +167,11 @@ class ClientsView extends StatelessWidget {
                                     viewModel.displayedClients[index];
 
                                 return CardClient(
+                                  viewModel: viewModel,
                                   width: width,
                                   height: height,
-                                  name:
-                                      '${client.firstname ?? ''} ${client.lastname ?? ''}',
-                                  email: client.email ?? "",
-                                  image: client.photo,
+                                  client: client,
+                                  index: index,
                                 );
                                 // return Text(
                                 //     '${client.firstname} ${client.lastname}');
