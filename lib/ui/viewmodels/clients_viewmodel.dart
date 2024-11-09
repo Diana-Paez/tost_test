@@ -10,6 +10,8 @@ class ClientsViewModel extends BaseViewModel {
 
   final ClientsService _clientsService = GetIt.instance<ClientsService>();
 
+  bool _editButtonIsDisplayed = false;
+
   int _loadFiveClients = 0;
 
   get loadFiveClients => _loadFiveClients;
@@ -27,6 +29,14 @@ class ClientsViewModel extends BaseViewModel {
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
+
+  bool get editButtonIsDisplayed => _editButtonIsDisplayed;
+
+  set editButtonIsDisplayed(bool value) {
+    _editButtonIsDisplayed = value;
+
+    notifyListeners();
+  }
 
   Future<void> fetchClients() async {
     setBusy(true);
