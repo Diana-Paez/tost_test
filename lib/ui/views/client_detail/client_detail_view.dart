@@ -1,22 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_test_tots/app/core/models/client_model.dart';
 import 'package:flutter_test_tots/app/core/utils/responsive_screen.dart';
 import 'package:flutter_test_tots/ui/shared/widgets/custom_button.dart';
 import 'package:flutter_test_tots/ui/viewmodels/client_detail_viewmodel.dart';
 import 'package:flutter_test_tots/ui/views/loading/loading_page_login.dart';
-import 'package:flutter_test_tots/ui/views/login/login_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
 
-class ClientDetailView extends StatelessWidget {
+class ClientDetailView extends StatefulWidget {
   const ClientDetailView({super.key});
+
+  @override
+  State<ClientDetailView> createState() => _ClientDetailViewState();
+}
+
+class _ClientDetailViewState extends State<ClientDetailView> {
+  TextEditingController controllerName = TextEditingController();
+  TextEditingController controllerLastName = TextEditingController();
+  TextEditingController controllerEmail = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final width = getUsableScreenDimension(context, ScreenDimension.width);
     final height = getUsableScreenDimension(context, ScreenDimension.height);
+    final clientData = ModalRoute.of(context)!.settings.arguments as Client?;
 
     return ViewModelBuilder<ClientDetailViewModel>.reactive(
+        onViewModelReady: (viewModel) {
+          if (clientData != null) {
+            controllerName.text = (clientData.firstname ?? "");
+            controllerLastName.text = (clientData.lastname ?? "");
+            controllerEmail.text = (clientData.email ?? "");
+            viewModel.setFirstName(clientData.firstname ?? "");
+            viewModel.setLastName(clientData.lastname ?? "");
+            viewModel.setEmail(clientData.email ?? "");
+          }
+        },
         viewModelBuilder: () => ClientDetailViewModel(),
         builder: (context, viewModel, child) {
           return viewModel.isBusy
@@ -50,7 +70,9 @@ class ClientDetailView extends StatelessWidget {
                             padding:
                                 EdgeInsets.only(left: width * 0.0230769231),
                             child: Text(
-                              "Add new client",
+                              clientData != null
+                                  ? "Edit client"
+                                  : "Add new client",
                               style: GoogleFonts.dmSans(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 17,
@@ -70,27 +92,38 @@ class ClientDetailView extends StatelessWidget {
                                     size: Size(width * 0.3051282051,
                                         height * 0.1409952607),
                                   ),
-                                  Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                            "assets/icons/iconavatar.svg",
-                                            width: width * 0.0794615385),
-                                        SizedBox(height: height * 0.0117535545),
-                                        Text(
-                                          "Upload image",
-                                          style: GoogleFonts.dmSans(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14,
-                                            color: const Color(0xFF080816)
-                                                .withOpacity(0.38),
+                                  clientData != null
+                                      ? CircleAvatar(
+                                          backgroundImage: NetworkImage(clientData
+                                                      .photo ==
+                                                  null
+                                              ? "https://img.freepik.com/vector-premium/icono-usuario-avatar-perfil-usuario-icono-persona-imagen-perfil-silueta-neutral-genero-adecuado_697711-1132.jpg?w=900"
+                                              : clientData.photo!),
+                                          radius: width * 0.3051282051,
+                                        )
+                                      : Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                  "assets/icons/iconavatar.svg",
+                                                  width: width * 0.0794615385),
+                                              SizedBox(
+                                                  height:
+                                                      height * 0.0117535545),
+                                              Text(
+                                                "Upload image",
+                                                style: GoogleFonts.dmSans(
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 14,
+                                                  color: const Color(0xFF080816)
+                                                      .withOpacity(0.38),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
+                                        )
                                 ],
                               ),
                             ),
@@ -101,6 +134,7 @@ class ClientDetailView extends StatelessWidget {
                             height: height * 0.0545023697,
                             child: TextField(
                               onChanged: viewModel.setFirstName,
+                              controller: controllerName,
                               decoration: InputDecoration(
                                 labelText: 'First name*',
                                 labelStyle: GoogleFonts.dmSans(
@@ -127,6 +161,7 @@ class ClientDetailView extends StatelessWidget {
                             height: height * 0.0545023697,
                             child: TextField(
                               onChanged: viewModel.setLastName,
+                              controller: controllerLastName,
                               decoration: InputDecoration(
                                 labelText: 'Last name*',
                                 labelStyle: GoogleFonts.dmSans(
@@ -153,6 +188,7 @@ class ClientDetailView extends StatelessWidget {
                             height: height * 0.0545023697,
                             child: TextField(
                               onChanged: viewModel.setEmail,
+                              controller: controllerEmail,
                               decoration: InputDecoration(
                                 labelText: 'Email address*',
                                 labelStyle: GoogleFonts.dmSans(
@@ -201,10 +237,19 @@ class ClientDetailView extends StatelessWidget {
                                   color: const Color(0xFFFFFFFF),
                                 ),
                                 onPressed: viewModel.isEnabled()
-                                    ? () => viewModel.saveClient().then(
-                                        (value) => value == true
-                                            ? Navigator.pop(context)
-                                            : null)
+                                    ? () {
+                                        if (clientData != null) {
+                                          viewModel.updateClient().then(
+                                              (value) => value == true
+                                                  ? Navigator.pop(context)
+                                                  : null);
+                                        }
+
+                                        viewModel.saveClient().then((value) =>
+                                            value == true
+                                                ? Navigator.pop(context)
+                                                : null);
+                                      }
                                     : () {},
                               ),
                             ],
