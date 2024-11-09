@@ -2,6 +2,16 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/client_model.dart';
 
+enum ClientMethod {
+  delete('/3'),
+  update('/2'),
+  create('');
+
+  final String endpoint;
+
+  const ClientMethod(this.endpoint);
+}
+
 class ClientsService {
   final String baseUrl =
       'https://myback-execute-dot-my-back-401316.uc.r.appspot.com/6-tots-test';
@@ -28,14 +38,17 @@ class ClientsService {
   }
 
   // Método para agregar un nuevo cliente
-  Future<bool?> addClient({
+  Future<bool?> requestServer({
     required String token,
     required String firstName,
     required String lastName,
     required String email,
+    required ClientMethod clientMethod,
     String? photo,
   }) async {
-    final Uri url = Uri.parse('$baseUrl/clients');
+    final String endpoint = clientMethod.endpoint;
+
+    final Uri url = Uri.parse('$baseUrl/clients$endpoint');
 
     // Headers con el token de autorización
     final Map<String, String> headers = {
