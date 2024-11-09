@@ -19,6 +19,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const ClientsView());
       case clientDetailRoute:
         return MaterialPageRoute(builder: (_) => const ClientDetailView());
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

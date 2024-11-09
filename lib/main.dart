@@ -3,10 +3,9 @@ import 'package:flutter_test_tots/app/app.router.dart';
 import 'package:flutter_test_tots/app/app.locator.dart';
 import 'package:flutter_test_tots/app/core/theme/app_theme.dart';
 import 'package:get_it/get_it.dart';
-import 'package:stacked_services/stacked_services.dart'; // Importamos el archivo del locator
+import 'package:stacked_services/stacked_services.dart';
 
 void main() {
-  // Llama a setupLocator para inicializar los servicios antes de ejecutar la app
   setupLocator();
 
   runApp(const MyApp());
