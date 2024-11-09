@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:stacked/stacked.dart';
-
 import '../ui/views/client_detail/client_detail_view.dart';
 import '../ui/views/clients/clients_view.dart';
 import '../ui/views/login/login_view.dart';
+import '../app/core/models/client_model.dart';
 
 class AppRouter {
   static const loginRoute = '/login';
@@ -15,10 +14,19 @@ class AppRouter {
     switch (settings.name) {
       case loginRoute:
         return MaterialPageRoute(builder: (_) => const LoginView());
+
       case clientsRoute:
         return MaterialPageRoute(builder: (_) => const ClientsView());
+
       case clientDetailRoute:
-        return MaterialPageRoute(builder: (_) => const ClientDetailView());
+        // Obtenemos los argumentos como un objeto `Client`
+        final client = settings.arguments as Client?;
+        return MaterialPageRoute(
+          builder: (_) => const ClientDetailView(),
+          settings: RouteSettings(
+            arguments: client, // Pasamos el argumento `Client`
+          ),
+        );
 
       default:
         return MaterialPageRoute(
