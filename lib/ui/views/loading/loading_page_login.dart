@@ -107,7 +107,8 @@ class _LoadingPageState extends State<LoadingPage>
     MediaQuery.viewPaddingOf(context).top;
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surfaceContainerLowest.withOpacity(1),
+      backgroundColor:
+          theme.colorScheme.surfaceContainerLowest.withOpacity(0.92),
       body: Stack(
         alignment: Alignment.center,
         children: [
