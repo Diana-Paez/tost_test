@@ -49,6 +49,7 @@ class ClientsViewModel extends BaseViewModel {
       _loadFiveClients = 5;
 
       _errorMessage = null;
+      notifyListeners();
     } catch (e) {
       _errorMessage = 'Failed to load clients';
     }
