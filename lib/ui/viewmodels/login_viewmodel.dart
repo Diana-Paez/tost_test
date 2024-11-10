@@ -64,7 +64,7 @@ class LoginViewModel extends BaseViewModel {
       _errorMessage = 'Error al iniciar sesión. Verifica tus credenciales.';
     } else {
       // Navegamos a la vista de clientes si la autenticación fue exitosa
-      _navigationService.navigateTo(AppRouter.clientsRoute);
+      _navigationService.pushNamedAndRemoveUntil(AppRouter.clientsRoute);
     }
 
     setBusy(false);

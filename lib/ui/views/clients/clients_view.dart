@@ -29,7 +29,9 @@ class ClientsView extends StatelessWidget {
         return Scaffold(
           body: SingleChildScrollView(
             child: SizedBox(
-              height: height + MediaQuery.of(context).viewPadding.top,
+              height: height +
+                  MediaQuery.of(context).viewPadding.top +
+                  MediaQuery.of(context).viewPadding.bottom,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
