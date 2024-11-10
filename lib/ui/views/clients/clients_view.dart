@@ -18,7 +18,9 @@ class ClientsView extends StatelessWidget {
     return ViewModelBuilder<ClientsViewModel>.reactive(
       viewModelBuilder: () => ClientsViewModel(),
       onViewModelReady: (viewModel) => viewModel.fetchClients(),
+      fireOnViewModelReadyOnce: false,
       builder: (context, viewModel, child) {
+        // viewModel.fetchClients();
         if (viewModel.errorMessage != null) {
           return Center(child: Text(viewModel.errorMessage!));
         }
@@ -150,9 +152,13 @@ class ClientsView extends StatelessWidget {
                                 ),
                                 padding: EdgeInsets.symmetric(
                                     horizontal: width * 0.01777251185),
-                                onPressed: () {
-                                  Navigator.pushNamed(
+                                onPressed: () async {
+                                  final result = await Navigator.pushNamed(
                                       context, AppRouter.clientDetailRoute);
+                                  if (result == true) {
+                                    viewModel.fetchClients();
+                                    // User cancelled the dialog
+                                  }
                                 },
                               ),
                             ],
@@ -172,6 +178,15 @@ class ClientsView extends StatelessWidget {
                                   height: height,
                                   client: client,
                                   index: index,
+                                  onPressed: () async {
+                                    final result = await Navigator.pushNamed(
+                                        context, AppRouter.clientDetailRoute,
+                                        arguments: client);
+                                    if (result == true) {
+                                      viewModel.fetchClients();
+                                      // User cancelled the dialog
+                                    }
+                                  },
                                 );
                                 // return Text(
                                 //     '${client.firstname} ${client.lastname}');
