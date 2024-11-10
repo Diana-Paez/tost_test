@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:flutter_test_tots/app/core/models/client_model.dart';
 import 'package:flutter_test_tots/app/core/services/auth_service.dart';
 import 'package:flutter_test_tots/app/core/services/clients_service.dart';
 import 'package:stacked/stacked.dart';
@@ -56,6 +55,7 @@ class ClientDetailViewModel extends BaseViewModel {
           email: _email,
           photo: _photo,
           clientMethod: ClientMethod.create);
+
       return true;
     } catch (e) {
       log('Error al guardar el cliente: $e');
@@ -85,17 +85,12 @@ class ClientDetailViewModel extends BaseViewModel {
     }
   }
 
-  Future<bool?> deleleClient() async {
+  Future<bool?> deleleClient(String id) async {
     setBusy(true);
 
     try {
-      await _clientsService.requestServer(
-          token: _authService.token!,
-          firstName: _firstName,
-          lastName: _lastName,
-          email: _email,
-          photo: _photo,
-          clientMethod: ClientMethod.delete);
+      await _clientsService.deleteClient(_authService.token!, id);
+
       return true;
     } catch (e) {
       log('Error al guardar el cliente: $e');
