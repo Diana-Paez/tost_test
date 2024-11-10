@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+
+import 'package:google_fonts/google_fonts.dart';
+import 'package:stacked/stacked.dart';
+
 import 'package:flutter_test_tots/app/app.router.dart';
 import 'package:flutter_test_tots/app/core/utils/responsive_screen.dart';
 import 'package:flutter_test_tots/ui/shared/widgets/card_client.dart';
 import 'package:flutter_test_tots/ui/shared/widgets/custom_button.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:stacked/stacked.dart';
+
 import '../../viewmodels/clients_viewmodel.dart';
 
 class ClientsView extends StatelessWidget {
@@ -20,7 +23,6 @@ class ClientsView extends StatelessWidget {
       onViewModelReady: (viewModel) => viewModel.fetchClients(),
       fireOnViewModelReadyOnce: false,
       builder: (context, viewModel, child) {
-        // viewModel.fetchClients();
         if (viewModel.errorMessage != null) {
           return Center(child: Text(viewModel.errorMessage!));
         }
@@ -102,13 +104,11 @@ class ClientsView extends StatelessWidget {
                           opacity: 0.33,
                           child: Image.asset(
                             "assets/icons/icon1.png",
-                            // fit: BoxFit.none,
                           ),
                         ),
                       ),
                     ),
                   ),
-
                   SafeArea(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
@@ -157,7 +157,6 @@ class ClientsView extends StatelessWidget {
                                       context, AppRouter.clientDetailRoute);
                                   if (result == true) {
                                     viewModel.fetchClients();
-                                    // User cancelled the dialog
                                   }
                                 },
                               ),
@@ -184,12 +183,9 @@ class ClientsView extends StatelessWidget {
                                         arguments: client);
                                     if (result == true) {
                                       viewModel.fetchClients();
-                                      // User cancelled the dialog
                                     }
                                   },
                                 );
-                                // return Text(
-                                //     '${client.firstname} ${client.lastname}');
                               },
                             ),
                           ),
@@ -197,18 +193,15 @@ class ClientsView extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  // Indicador de carga
                   if (viewModel.isBusy)
                     Positioned.fill(
                       child: Container(
-                        color: Colors.black54, // Fondo semitransparente
+                        color: Colors.black54,
                         child: const Center(
                           child: CircularProgressIndicator(),
                         ),
                       ),
                     ),
-
                   Positioned(
                     bottom: height * 0.04265402844,
                     child: CustomButton(

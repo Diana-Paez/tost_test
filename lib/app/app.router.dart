@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../app/core/models/client_model.dart';
 import '../ui/views/client_detail/client_detail_view.dart';
 import '../ui/views/clients/clients_view.dart';
 import '../ui/views/login/login_view.dart';
-import '../app/core/models/client_model.dart';
 
+// Clase que administra las rutas de la app.
 class AppRouter {
   static const loginRoute = '/login';
   static const clientsRoute = '/clients';
@@ -15,6 +16,7 @@ class AppRouter {
       case loginRoute:
         return MaterialPageRoute(builder: (_) => const LoginView());
 
+      // Obtiene los argumentos como un objeto `Client`
       case clientsRoute:
         final arguments = settings.arguments as dynamic;
         return MaterialPageRoute(
@@ -25,12 +27,11 @@ class AppRouter {
         );
 
       case clientDetailRoute:
-        // Obtenemos los argumentos como un objeto `Client`
         final client = settings.arguments as Client?;
         return MaterialPageRoute(
           builder: (_) => const ClientDetailView(),
           settings: RouteSettings(
-            arguments: client, // Pasamos el argumento `Client`
+            arguments: client,
           ),
         );
 

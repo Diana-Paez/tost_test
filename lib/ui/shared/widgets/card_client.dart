@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_tots/app/core/models/client_model.dart';
-import 'package:flutter_test_tots/ui/viewmodels/clients_viewmodel.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:flutter_test_tots/app/core/models/client_model.dart';
+import 'package:flutter_test_tots/ui/viewmodels/clients_viewmodel.dart';
 
 class CardClient extends StatelessWidget {
   const CardClient({
@@ -124,15 +125,14 @@ class CardClient extends StatelessWidget {
                       style: GoogleFonts.dmSans(
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
-                        letterSpacing: 0.5, // Ajusta según tu necesidad
+                        letterSpacing: 0.5,
                         color: const Color(0xFFFFFFFF),
                       ),
                     ),
                   ),
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(10), // Borde con radio de 10
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),

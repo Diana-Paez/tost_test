@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:http/http.dart' as http;
+
 import '../models/client_model.dart';
 
 enum ClientMethod {
@@ -8,10 +10,10 @@ enum ClientMethod {
   create('');
 
   final String endpoint;
-
   const ClientMethod(this.endpoint);
 }
 
+// Servicio de autenticación que maneja el inicio de sesión y el token de acceso
 class ClientsService {
   final String baseUrl =
       'https://myback-execute-dot-my-back-401316.uc.r.appspot.com/6-tots-test';
@@ -37,7 +39,6 @@ class ClientsService {
     }
   }
 
-  // Método para agregar un nuevo cliente
   Future<bool?> requestServer({
     required String token,
     required String firstName,
@@ -50,13 +51,11 @@ class ClientsService {
 
     final Uri url = Uri.parse('$baseUrl/clients$endpoint');
 
-    // Headers con el token de autorización
     final Map<String, String> headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
 
-    // Cuerpo de la solicitud en formato JSON
     final String body = jsonEncode({
       "firstname": firstName,
       "lastname": lastName,
@@ -66,14 +65,12 @@ class ClientsService {
       "caption": "",
     });
 
-    // Realiza la petición POST
     final response = await http.post(
       url,
       headers: headers,
       body: body,
     );
 
-    // Verifica si la petición fue exitosa
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
     } else {
@@ -82,7 +79,6 @@ class ClientsService {
   }
 
   Future<bool?> deleteClient(String token, String id) async {
-    // Configuración de la URL y los encabezados
     final String url =
         'https://myback-execute-dot-my-back-401316.uc.r.appspot.com/6-tots-test/clients/$id';
     final Map<String, String> headers = {
@@ -91,17 +87,14 @@ class ClientsService {
     };
 
     try {
-      // Realizamos la solicitud POST para eliminar el cliente
       final http.Request request = http.Request(
         "DELETE",
         Uri.parse(url),
-        // headers: headers,
       );
 
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
 
-      // Manejo de la respuesta
       if (response.statusCode == 200 || response.statusCode == 201) {
         String responseBody = await response.stream.bytesToString();
 
@@ -111,7 +104,6 @@ class ClientsService {
         throw Exception('Failed to delete client');
       }
     } catch (e) {
-      // Manejo de excepciones
       log('Excepción al intentar eliminar el cliente: $e');
       throw Exception('Failed to delete client');
     }

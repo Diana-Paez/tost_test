@@ -1,9 +1,11 @@
-import 'package:flutter_test_tots/app/app.router.dart';
-import 'package:stacked/stacked.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import '../../app/core/services/auth_service.dart';
+
+import 'package:flutter_test_tots/app/app.router.dart';
+
 import '../../app/core/models/auth_response_model.dart';
+import '../../app/core/services/auth_service.dart';
 
 class LoginViewModel extends BaseViewModel {
   final AuthService _authService = GetIt.instance<AuthService>();

@@ -65,7 +65,6 @@ class LoginView extends StatelessWidget {
                         ),
                         Positioned(
                           top: height * 0.8258293839,
-                          // left: width * 0.0512820513,
                           child: SizedBox(
                             height: height * 0.3613744076,
                             width: width * 0.0512820513,
@@ -141,7 +140,6 @@ class LoginView extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: height * 0.0616113744),
-
                               CustomButton(
                                 height: height * 0.0616113744,
                                 width: width * 0.7589743590,
@@ -155,14 +153,6 @@ class LoginView extends StatelessWidget {
                                 onPressed:
                                     model.isEnabled() ? model.login : () {},
                               ),
-                              // if (model.errorMessage != null)
-                              //   Padding(
-                              //     padding: const EdgeInsets.only(top: 10),
-                              //     child: Text(
-                              //       model.errorMessage!,
-                              //       style: const TextStyle(color: Colors.red),
-                              //     ),
-                              //   ),
                             ],
                           ),
                         ),

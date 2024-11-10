@@ -23,7 +23,6 @@ class Client {
     required this.userId,
   });
 
-  // Método para crear una instancia de `Client` desde un JSON
   factory Client.fromJson(Map<String, dynamic> json) {
     return Client(
       id: json['id'],
@@ -39,7 +38,6 @@ class Client {
     );
   }
 
-  // Método para convertir una instancia de `Client` a JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,

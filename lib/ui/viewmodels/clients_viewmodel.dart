@@ -1,6 +1,8 @@
-import 'package:flutter_test_tots/app/core/services/auth_service.dart';
-import 'package:stacked/stacked.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stacked/stacked.dart';
+
+import 'package:flutter_test_tots/app/core/services/auth_service.dart';
+
 import '../../app/core/models/client_model.dart';
 import '../../app/core/services/clients_service.dart';
 
@@ -28,15 +30,14 @@ class ClientsViewModel extends BaseViewModel {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  int? _selectedCardIndex; // Índice de la card seleccionada
+  int? _selectedCardIndex;
   int? get selectedCardIndex => _selectedCardIndex;
 
-  // Método para seleccionar/deseleccionar una card
   void toggleSelectedCardIndex(int index) {
     if (_selectedCardIndex == index) {
-      _selectedCardIndex = null; // Deselecciona si es la misma
+      _selectedCardIndex = null;
     } else {
-      _selectedCardIndex = index; // Selecciona una nueva card
+      _selectedCardIndex = index;
     }
     notifyListeners();
   }
@@ -63,25 +64,20 @@ class ClientsViewModel extends BaseViewModel {
       _filteredClients.take(_loadFiveClients).toList();
 
   void searchClients(String query) {
-    // Limpia el `query` eliminando espacios extras
     final searchQuery = query.trim().toLowerCase();
 
-    // Si el query está vacío, muestra todos los clientes
     if (searchQuery.isEmpty) {
       _filteredClients = List.from(_clients);
     } else {
       _filteredClients = _clients.where((client) {
-        // Concatena firstname y lastname, y compara con el email
         final name =
             '${client.firstname ?? ''} ${client.lastname ?? ''}'.toLowerCase();
         final email = client.email?.toLowerCase() ?? '';
 
-        // Verifica si el query aparece en el nombre o email
         return name.contains(searchQuery) || email.contains(searchQuery);
       }).toList();
     }
 
-    // Reinicia el contador de clientes visibles para la lista filtrada
     _loadFiveClients =
         (_filteredClients.length >= 5) ? 5 : _filteredClients.length;
 

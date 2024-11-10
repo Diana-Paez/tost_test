@@ -1,21 +1,20 @@
 import 'dart:developer';
 
+import 'package:get_it/get_it.dart';
+import 'package:stacked/stacked.dart';
+
 import 'package:flutter_test_tots/app/core/services/auth_service.dart';
 import 'package:flutter_test_tots/app/core/services/clients_service.dart';
-import 'package:stacked/stacked.dart';
-import 'package:get_it/get_it.dart';
 
 class ClientDetailViewModel extends BaseViewModel {
   final AuthService _authService = GetIt.instance<AuthService>();
   final ClientsService _clientsService = GetIt.instance<ClientsService>();
 
-  // Variables para almacenar los datos del formulario
   String _firstName = '';
   String _lastName = '';
   String _email = '';
   String? _photo;
 
-  // Setters para actualizar cada campo
   void setFirstName(String value) {
     _firstName = value;
     notifyListeners();
@@ -44,7 +43,6 @@ class ClientDetailViewModel extends BaseViewModel {
     }
   }
 
-// Método para guardar el cliente
   Future<bool?> saveClient() async {
     setBusy(true);
     try {

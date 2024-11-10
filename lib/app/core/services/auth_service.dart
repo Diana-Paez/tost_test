@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+
 import '../models/auth_response_model.dart';
 
+// Servicio de autenticación que maneja el inicio de sesión y el token de acceso
 class AuthService {
-  String? _token; // Token almacenado
+  String? _token;
 
-  // Método para obtener el token
   String? get token => _token;
 
   final String _baseUrl =
@@ -29,7 +31,6 @@ class AuthService {
             AuthResponseModel.fromJson(json.decode(response.body));
 
         _token = authResponseModel.accessToken;
-        // Convertimos la respuesta en un AuthResponse
         return authResponseModel;
       } else {
         log('Error de autenticación: ${response.reasonPhrase}');

@@ -35,6 +35,7 @@ dependencies:
   flutter_svg: ^2.0.14
   get_it: null
   google_fonts: ^6.2.1
+  guitar_chord_library: ^0.0.4
   http: ^1.2.2
   stacked: ^3.4.3
   stacked_services: ^1.5.1

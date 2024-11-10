@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_tots/app/core/utils/responsive_screen.dart';
+
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:flutter_test_tots/app/core/utils/responsive_screen.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
@@ -19,7 +21,7 @@ class _LoadingPageState extends State<LoadingPage>
   late Animation<double> opacityAnimation;
   late List<Animation<double>> animations;
 
-  late bool shouldReverse; // Variable para controlar la reversa
+  late bool shouldReverse;
 
   @override
   void initState() {
@@ -46,42 +48,36 @@ class _LoadingPageState extends State<LoadingPage>
             ));
 
     animations = animationControllers.map((controller) {
-      // Crear una animación para cada esfera usando el respectivo controlador
       return Tween<double>(begin: 0, end: 0.117370892).animate(
           CurvedAnimation(parent: controller, curve: Curves.decelerate));
     }).toList();
 
-    shouldReverse = false; // Inicialmente no se debe hacer reversa
+    shouldReverse = false;
 
-    // Iniciar las animaciones con delays progresivos
     for (int i = 0; i < animationControllers.length; i++) {
       Future.delayed(Duration(milliseconds: i * 80), () {
-        animationControllers[i].forward(); // Repetir la animación
+        animationControllers[i].forward();
       });
     }
 
-    // Escuchar el cambio de status de los controladores
     animationControllers[animationControllers.length - 3]
         .addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        // Si el último controlador completa su animación y se debe hacer reversa
         for (int i = 0; i < animationControllers.length; i++) {
           Future.delayed(Duration(milliseconds: i * 80), () {
-            animationControllers[i].reverse(); // Repetir la animación
+            animationControllers[i].reverse();
           });
         }
-        shouldReverse = false; // Reiniciar la bandera
+        shouldReverse = false;
       }
     });
 
-    // Escuchar el cambio de status del primer controlador
     animationControllers[animationControllers.length - 3]
         .addStatusListener((status) {
       if (status == AnimationStatus.dismissed) {
-        // Cuando el primer controlador llega al inicio, marcar para hacer reversa
         for (int i = 0; i < animationControllers.length; i++) {
           Future.delayed(Duration(milliseconds: i * 80), () {
-            animationControllers[i].forward(); // Repetir la animación
+            animationControllers[i].forward();
           });
         }
       }

@@ -11,7 +11,6 @@ class AuthResponseModel {
     required this.accessToken,
   });
 
-  // Método para crear una instancia de AuthResponse a partir de un JSON
   factory AuthResponseModel.fromJson(Map<String, dynamic> json) {
     return AuthResponseModel(
       id: json['id'],
@@ -21,7 +20,6 @@ class AuthResponseModel {
     );
   }
 
-  // Método opcional para convertir una instancia de AuthResponse a JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
