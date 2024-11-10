@@ -16,7 +16,13 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const LoginView());
 
       case clientsRoute:
-        return MaterialPageRoute(builder: (_) => const ClientsView());
+        final arguments = settings.arguments as dynamic;
+        return MaterialPageRoute(
+          builder: (_) => const ClientsView(),
+          settings: RouteSettings(
+            arguments: arguments,
+          ),
+        );
 
       case clientDetailRoute:
         // Obtenemos los argumentos como un objeto `Client`
