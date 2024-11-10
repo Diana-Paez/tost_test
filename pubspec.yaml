@@ -29,14 +29,16 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   auto_route: ^9.2.2
+  cloudinary_flutter: ^1.3.0
+  cloudinary_url_gen: ^1.6.0
   cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.14
   get_it: null
   google_fonts: ^6.2.1
-  guitar_chord_library: ^0.0.4
   http: ^1.2.2
+  image_picker: ^1.1.2
   stacked: ^3.4.3
   stacked_services: ^1.5.1
 
