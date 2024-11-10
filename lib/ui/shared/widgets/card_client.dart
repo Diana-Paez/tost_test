@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_tots/app/app.router.dart';
 import 'package:flutter_test_tots/app/core/models/client_model.dart';
 import 'package:flutter_test_tots/ui/viewmodels/clients_viewmodel.dart';
 
@@ -13,6 +12,7 @@ class CardClient extends StatelessWidget {
     required this.viewModel,
     required this.index,
     required this.client,
+    this.onPressed,
   });
 
   final double width;
@@ -20,6 +20,7 @@ class CardClient extends StatelessWidget {
   final ClientsViewModel viewModel;
   final int index;
   final Client client;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +106,7 @@ class CardClient extends StatelessWidget {
               height: height * 0.0710900474,
               child: FloatingActionButton.extended(
                 onPressed: () {
-                  Navigator.pushNamed(context, AppRouter.clientDetailRoute,
-                      arguments: client);
+                  onPressed?.call();
                   viewModel
                       .toggleSelectedCardIndex(viewModel.selectedCardIndex!);
                 },
