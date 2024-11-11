@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:stacked/stacked.dart';
+
 import 'package:flutter_test_tots/app/core/models/client_model.dart';
 import 'package:flutter_test_tots/app/core/utils/responsive_screen.dart';
 import 'package:flutter_test_tots/ui/shared/widgets/custom_button.dart';
 import 'package:flutter_test_tots/ui/viewmodels/client_detail_viewmodel.dart';
 import 'package:flutter_test_tots/ui/views/loading/loading_page_login.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:stacked/stacked.dart';
 
 class ClientDetailView extends StatefulWidget {
   const ClientDetailView({super.key});
@@ -37,10 +39,6 @@ class _ClientDetailViewState extends State<ClientDetailView> {
                 lastName: clientData.lastname ?? "",
                 email: clientData.email ?? "",
                 photo: clientData.photo ?? "");
-            // viewModel.setFirstName(clientData.firstname ?? "");
-            // viewModel.setLastName(clientData.lastname ?? "");
-            // viewModel.setEmail(clientData.email ?? "");
-            // viewModel.setPhoto(clientData.photo ?? "");
           }
         },
         viewModelBuilder: () => ClientDetailViewModel(),
