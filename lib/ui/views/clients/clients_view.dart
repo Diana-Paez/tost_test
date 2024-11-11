@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_tots/ui/shared/widgets/search_bar_custom.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
@@ -139,7 +140,7 @@ class ClientsView extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SearchBar(
+                              SearchBarCustom(
                                 onSearchChanged: viewModel.searchClients,
                               ),
                               CustomButton(
@@ -227,52 +228,6 @@ class ClientsView extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class SearchBar extends StatelessWidget {
-  const SearchBar({super.key, required this.onSearchChanged});
-
-  final Function(String) onSearchChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final width = getUsableScreenDimension(context, ScreenDimension.width);
-    final height = getUsableScreenDimension(context, ScreenDimension.height);
-    return SizedBox(
-      width: width * 0.5564102564,
-      height: height * 0.04265402844,
-      child: TextField(
-        onChanged: onSearchChanged,
-        textAlignVertical: TextAlignVertical.bottom,
-        decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-          hintText: 'Search...',
-          hintStyle: TextStyle(
-            color: Colors.black.withOpacity(0.62),
-          ),
-          prefixIcon: const Icon(
-            Icons.search,
-            color: Color(0xFF616060),
-          ),
-          filled: true,
-          fillColor: const Color(0xFFFFFFFF),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(68),
-            borderSide: BorderSide(color: Colors.grey.shade400, width: 1),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(68),
-            borderSide: const BorderSide(color: Color(0x9C1F1D2B), width: 1),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(68),
-            borderSide: const BorderSide(color: Color(0x9C1F1D2B), width: 1),
-          ),
-        ),
-      ),
     );
   }
 }
