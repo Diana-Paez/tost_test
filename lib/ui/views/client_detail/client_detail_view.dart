@@ -32,9 +32,15 @@ class _ClientDetailViewState extends State<ClientDetailView> {
             controllerName.text = (clientData.firstname ?? "");
             controllerLastName.text = (clientData.lastname ?? "");
             controllerEmail.text = (clientData.email ?? "");
-            viewModel.setFirstName(clientData.firstname ?? "");
-            viewModel.setLastName(clientData.lastname ?? "");
-            viewModel.setEmail(clientData.email ?? "");
+            viewModel.setAll(
+                firstName: clientData.firstname ?? "",
+                lastName: clientData.lastname ?? "",
+                email: clientData.email ?? "",
+                photo: clientData.photo ?? "");
+            // viewModel.setFirstName(clientData.firstname ?? "");
+            // viewModel.setLastName(clientData.lastname ?? "");
+            // viewModel.setEmail(clientData.email ?? "");
+            // viewModel.setPhoto(clientData.photo ?? "");
           }
         },
         viewModelBuilder: () => ClientDetailViewModel(),
@@ -86,46 +92,8 @@ class _ClientDetailViewState extends State<ClientDetailView> {
                               ? IconButton(
                                   onPressed: () {
                                     viewModel
-                                        .deleleClient(clientData.id.toString())
-                                        .then((value) => value == true
-                                            ? Navigator.pop(context, true)
-                                            : null);
+                                        .deleleClient(clientData.id.toString());
                                   },
-                                  // onPressed: () async {
-                                  //   // Primero intentamos eliminar el cliente
-                                  //   final bool? isDeleted =
-                                  //       await viewModel.deleleClient();
-
-                                  //   // Verificamos que el widget sigue montado antes de usar el contexto
-                                  //   if (!mounted) return;
-
-                                  //   if (isDeleted ?? false) {
-                                  //     // Si el cliente fue eliminado exitosamente, mostramos un mensaje
-                                  //     ScaffoldMessenger.of(context)
-                                  //         .showSnackBar(
-                                  //       SnackBar(
-                                  //           content: Text(
-                                  //               'Cliente eliminado exitosamente')),
-                                  //     );
-
-                                  //     // Navegamos a ClientDetailView usando el router
-                                  //     Navigator.pushNamed(
-                                  //       context,
-                                  //       AppRouter
-                                  //           .clientDetailRoute, // Reemplaza con el nombre de tu ruta
-                                  //       arguments:
-                                  //           clientData, // Pasamos el cliente como argumento (asegúrate de definir 'client')
-                                  //     );
-                                  //   } else {
-                                  //     // Mostramos un mensaje de error si no se pudo eliminar
-                                  //     ScaffoldMessenger.of(context)
-                                  //         .showSnackBar(
-                                  //       SnackBar(
-                                  //           content: Text(
-                                  //               'Error al eliminar el cliente')),
-                                  //     );
-                                  //   }
-                                  // },
                                   icon: const Icon(
                                     size: 30,
                                     Icons.delete_forever_outlined,
@@ -134,49 +102,63 @@ class _ClientDetailViewState extends State<ClientDetailView> {
                                 )
                               : const SizedBox.shrink(),
                         ]),
-                        Center(
-                          child: SizedBox(
-                            width: width * 0.3051282051,
-                            height: height * 0.1409952607,
-                            child: Stack(
-                              children: [
-                                CustomPaint(
-                                  painter: RPSCustomPainter(),
-                                  size: Size(width * 0.3051282051,
-                                      height * 0.1409952607),
-                                ),
-                                clientData != null
-                                    ? CircleAvatar(
-                                        backgroundImage: NetworkImage(clientData
-                                                    .photo ==
-                                                null
-                                            ? "https://img.freepik.com/vector-premium/icono-usuario-avatar-perfil-usuario-icono-persona-imagen-perfil-silueta-neutral-genero-adecuado_697711-1132.jpg?w=900"
-                                            : clientData.photo!),
-                                        radius: width * 0.3051282051,
-                                      )
-                                    : Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                                "assets/icons/iconavatar.svg",
-                                                width: width * 0.0794615385),
-                                            SizedBox(
-                                                height: height * 0.0117535545),
-                                            Text(
-                                              "Upload image",
-                                              style: GoogleFonts.dmSans(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14,
-                                                color: const Color(0xFF080816)
-                                                    .withOpacity(0.38),
+                        InkWell(
+                          onTap: () async {
+                            await viewModel.selectImage();
+                          },
+                          child: Center(
+                            child: SizedBox(
+                              width: width * 0.3051282051,
+                              height: height * 0.1409952607,
+                              child: Stack(
+                                children: [
+                                  CustomPaint(
+                                    painter: RPSCustomPainter(),
+                                    size: Size(width * 0.3051282051,
+                                        height * 0.1409952607),
+                                  ),
+                                  viewModel.photoGalery != null
+                                      ? CircleAvatar(
+                                          backgroundImage:
+                                              FileImage(viewModel.photoGalery!),
+                                          radius: width * 0.3051282051,
+                                        )
+                                      : clientData != null
+                                          ? CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                  clientData.photo == null
+                                                      ? "https://img.freepik.com/vector-premium/icono-usuario-avatar-perfil-usuario-icono-persona-imagen-perfil-silueta-neutral-genero-adecuado_697711-1132.jpg?w=900"
+                                                      : clientData.photo!),
+                                              radius: width * 0.3051282051,
+                                            )
+                                          : Center(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                      "assets/icons/iconavatar.svg",
+                                                      width:
+                                                          width * 0.0794615385),
+                                                  SizedBox(
+                                                      height: height *
+                                                          0.0117535545),
+                                                  Text(
+                                                    "Upload image",
+                                                    style: GoogleFonts.dmSans(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 14,
+                                                      color: const Color(
+                                                              0xFF080816)
+                                                          .withOpacity(0.38),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                              ],
+                                            )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -291,16 +273,11 @@ class _ClientDetailViewState extends State<ClientDetailView> {
                               onPressed: viewModel.isEnabled()
                                   ? () {
                                       if (clientData != null) {
-                                        viewModel.updateClient().then((value) =>
-                                            value == true
-                                                ? Navigator.pop(context)
-                                                : null);
+                                        viewModel.updateClient(
+                                            clientData.id.toString());
+                                      } else {
+                                        viewModel.saveClient();
                                       }
-
-                                      viewModel.saveClient().then((value) =>
-                                          value == true
-                                              ? Navigator.pop(context, true)
-                                              : null);
                                     }
                                   : () {},
                             ),
@@ -317,26 +294,6 @@ class _ClientDetailViewState extends State<ClientDetailView> {
             ),
           );
         });
-  }
-
-  // Método auxiliar para construir los TextFields
-  Widget _buildTextField(String label, double width) {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: GoogleFonts.dmSans(
-          color: Colors.grey,
-          fontWeight: FontWeight.w500,
-          fontSize: width * 0.035, // Tamaño de texto responsivo
-        ),
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey),
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-      ),
-    );
   }
 }
 
@@ -379,15 +336,16 @@ class RPSCustomPainter extends CustomPainter {
         size.height * 0.004201681);
     path_0.close();
 
-    Paint paint_0_stroke = Paint()
+    Paint paint0Stroke = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    paint_0_stroke.color = Color(0xffe4f353).withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_stroke);
+    paint0Stroke.color = const Color(0xffe4f353).withOpacity(1.0);
+    canvas.drawPath(path_0, paint0Stroke);
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Color.fromRGBO(255, 255, 255, .75).withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_fill);
+    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
+    paint0Fill.color =
+        const Color.fromRGBO(255, 255, 255, .75).withOpacity(1.0);
+    canvas.drawPath(path_0, paint0Fill);
   }
 
   @override
