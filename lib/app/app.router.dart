@@ -5,7 +5,6 @@ import '../ui/views/client_detail/client_detail_view.dart';
 import '../ui/views/clients/clients_view.dart';
 import '../ui/views/login/login_view.dart';
 
-// Clase que administra las rutas de la app.
 class AppRouter {
   static const loginRoute = '/login';
   static const clientsRoute = '/clients';

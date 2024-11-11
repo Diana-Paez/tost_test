@@ -13,7 +13,6 @@ class LoginViewModel extends BaseViewModel {
       GetIt.instance<NavigationService>();
 
   String _email = '';
-  // Métodos para actualizar email y password
   void setEmail(String email) {
     _email = email;
     notifyListeners();
@@ -53,17 +52,15 @@ class LoginViewModel extends BaseViewModel {
   AuthResponseModel? _authResponse;
   AuthResponseModel? get authResponse => _authResponse;
 
-  // Método para manejar la autenticación
   Future<void> login() async {
     setBusy(true);
 
-    _errorMessage = null; // Reseteamos el mensaje de error
+    _errorMessage = null;
     _authResponse = await _authService.authenticate(_email, _password);
 
     if (_authResponse == null) {
       _errorMessage = 'Error al iniciar sesión. Verifica tus credenciales.';
     } else {
-      // Navegamos a la vista de clientes si la autenticación fue exitosa
       _navigationService.pushNamedAndRemoveUntil(AppRouter.clientsRoute);
     }
 

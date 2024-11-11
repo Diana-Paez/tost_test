@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme().getTheme(),
-      title: 'Material App',
+      title: 'TOTS APP',
       navigatorKey: StackedService.navigatorKey,
       initialRoute: AppRouter.loginRoute,
       onGenerateRoute: AppRouter.generateRoute,

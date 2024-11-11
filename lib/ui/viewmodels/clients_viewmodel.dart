@@ -7,7 +7,6 @@ import '../../app/core/models/client_model.dart';
 import '../../app/core/services/clients_service.dart';
 
 class ClientsViewModel extends BaseViewModel {
-  //se almacena el token
   final AuthService _authService = GetIt.instance<AuthService>();
 
   final ClientsService _clientsService = GetIt.instance<ClientsService>();

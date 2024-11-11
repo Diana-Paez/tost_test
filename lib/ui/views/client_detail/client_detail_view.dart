@@ -28,6 +28,8 @@ class _ClientDetailViewState extends State<ClientDetailView> {
     final width = getUsableScreenDimension(context, ScreenDimension.width);
     final height = getUsableScreenDimension(context, ScreenDimension.height);
     final clientData = ModalRoute.of(context)!.settings.arguments as Client?;
+    const String placeholderAvatar =
+        'https://img.freepik.com/vector-premium/icono-usuario-avatar-perfil-usuario-icono-persona-imagen-perfil-silueta-neutral-genero-adecuado_697711-1132.jpg?w=900';
 
     return ViewModelBuilder<ClientDetailViewModel>.reactive(
         onViewModelReady: (viewModel) {
@@ -126,7 +128,7 @@ class _ClientDetailViewState extends State<ClientDetailView> {
                                           ? CircleAvatar(
                                               backgroundImage: NetworkImage(
                                                   clientData.photo == null
-                                                      ? "https://img.freepik.com/vector-premium/icono-usuario-avatar-perfil-usuario-icono-persona-imagen-perfil-silueta-neutral-genero-adecuado_697711-1132.jpg?w=900"
+                                                      ? placeholderAvatar
                                                       : clientData.photo!),
                                               radius: width * 0.3051282051,
                                             )

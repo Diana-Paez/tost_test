@@ -29,6 +29,8 @@ class ClientDetailViewModel extends BaseViewModel {
 
   File? get photoGalery => _photoGalery;
 
+  String requestErrorMessage(String type) => 'Error al $type el cliente: ';
+
   set photoGalery(File? value) {
     _photoGalery = value;
     notifyListeners();
@@ -77,6 +79,7 @@ class ClientDetailViewModel extends BaseViewModel {
 
   Future<bool?> saveClient() async {
     setBusy(true);
+    const String typeError = 'guardar';
     try {
       if (photoGalery != null) {
         await uploadImage(photoGalery!);
@@ -92,7 +95,7 @@ class ClientDetailViewModel extends BaseViewModel {
 
       return true;
     } catch (e) {
-      log('Error al guardar el cliente: $e');
+      log('$requestErrorMessage($typeError)$e');
       throw Exception('Failed to add client');
     } finally {
       setBusy(false);
@@ -101,6 +104,7 @@ class ClientDetailViewModel extends BaseViewModel {
 
   Future<bool?> updateClient(String id) async {
     setBusy(true);
+    const String typeError = 'actualizar';
 
     try {
       if (photoGalery != null) {
@@ -118,7 +122,7 @@ class ClientDetailViewModel extends BaseViewModel {
 
       return true;
     } catch (e) {
-      log('Error al guardar el cliente: $e');
+      log('$requestErrorMessage($typeError)$e');
       throw Exception('Failed to add client');
     } finally {
       setBusy(false);
@@ -127,6 +131,7 @@ class ClientDetailViewModel extends BaseViewModel {
 
   Future<bool?> deleleClient(String id) async {
     setBusy(true);
+    const String typeError = 'actualizar';
 
     try {
       await _clientsService.requestServer(
@@ -137,7 +142,7 @@ class ClientDetailViewModel extends BaseViewModel {
 
       return true;
     } catch (e) {
-      log('Error al guardar el cliente: $e');
+      log('$requestErrorMessage($typeError)$e');
       throw Exception('Failed to add client');
     } finally {
       setBusy(false);

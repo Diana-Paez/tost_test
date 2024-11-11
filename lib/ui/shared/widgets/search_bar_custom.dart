@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_test_tots/app/core/utils/responsive_screen.dart';
 
 class SearchBarCustom extends StatelessWidget {
@@ -10,6 +11,7 @@ class SearchBarCustom extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = getUsableScreenDimension(context, ScreenDimension.width);
     final height = getUsableScreenDimension(context, ScreenDimension.height);
+    const hintText = 'Search...';
     return SizedBox(
       width: width * 0.5564102564,
       height: height * 0.04265402844,
@@ -19,7 +21,7 @@ class SearchBarCustom extends StatelessWidget {
         decoration: InputDecoration(
           contentPadding:
               const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-          hintText: 'Search...',
+          hintText: hintText,
           hintStyle: TextStyle(
             color: Colors.black.withOpacity(0.62),
           ),

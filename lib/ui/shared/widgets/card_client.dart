@@ -26,6 +26,8 @@ class CardClient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isSelected = viewModel.selectedCardIndex == index;
+    const String placeholderAvatar =
+        'https://img.freepik.com/vector-premium/icono-usuario-avatar-perfil-usuario-icono-persona-imagen-perfil-silueta-neutral-genero-adecuado_697711-1132.jpg?w=900';
 
     return Stack(
       alignment: Alignment.center,
@@ -53,9 +55,8 @@ class CardClient extends StatelessWidget {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(client.photo == null
-                    ? "https://img.freepik.com/vector-premium/icono-usuario-avatar-perfil-usuario-icono-persona-imagen-perfil-silueta-neutral-genero-adecuado_697711-1132.jpg?w=900"
-                    : client.photo!),
+                backgroundImage: NetworkImage(
+                    client.photo == null ? placeholderAvatar : client.photo!),
                 radius: width * 0.0641025641,
               ),
               SizedBox(width: width * 0.03076923077),
