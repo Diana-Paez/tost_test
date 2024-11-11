@@ -103,12 +103,15 @@ class ClientDetailViewModel extends BaseViewModel {
     setBusy(true);
 
     try {
+      if (photoGalery != null) {
+        await uploadImage(photoGalery!);
+      }
       await _clientsService.requestServer(
           token: _authService.token!,
           firstName: _firstName,
           lastName: _lastName,
           email: _email,
-          photo: _photo,
+          photo: imageUrl ?? _photo,
           id: id,
           clientMethod: ClientMethod.update);
       _navigationService.back(result: true);
