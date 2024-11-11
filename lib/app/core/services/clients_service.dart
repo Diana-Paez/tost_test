@@ -6,33 +6,33 @@ import 'package:http/http.dart' as http;
 import '../models/client_model.dart';
 
 enum ClientMethod {
-  update('/2'),
-  create('');
+  update('PUT', '/clients'),
+  create('POST', '/clients'),
+  delete('DELETE', '/clients');
 
+  final String method;
   final String endpoint;
-  const ClientMethod(this.endpoint);
+  const ClientMethod(this.method, this.endpoint);
 }
 
-// Servicio de autenticación que maneja el inicio de sesión y el token de acceso
 class ClientsService {
   final String baseUrl =
       'https://myback-execute-dot-my-back-401316.uc.r.appspot.com/6-tots-test';
 
   Future<List<Client>> fetchClients(String token) async {
-    final Map<String, String> headers = {
+    final headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
 
-    final http.Response response = await http.get(
+    final response = await http.get(
       Uri.parse('$baseUrl/clients'),
       headers: headers,
     );
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> responseBody = json.decode(response.body);
-      List data = responseBody['data'];
-
+      final responseBody = json.decode(response.body);
+      final List data = responseBody['data'];
       return data.map((client) => Client.fromJson(client)).toList();
     } else {
       throw Exception('Failed to load clients');
@@ -41,72 +41,90 @@ class ClientsService {
 
   Future<bool?> requestServer({
     required String token,
-    required String firstName,
-    required String lastName,
-    required String email,
+    String? firstName,
+    String? lastName,
+    String? email,
     required ClientMethod clientMethod,
+    String? id,
     String? photo,
   }) async {
-    final String endpoint = clientMethod.endpoint;
-
-    final Uri url = Uri.parse('$baseUrl/clients$endpoint');
-
-    final Map<String, String> headers = {
+    final url = Uri.parse(
+        '$baseUrl${clientMethod.endpoint}${id != null ? '/$id' : ''}');
+    final headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
-
-    final String body = jsonEncode({
-      "firstname": firstName,
-      "lastname": lastName,
-      "email": email,
+    final body = jsonEncode({
+      "firstname": firstName ?? "",
+      "lastname": lastName ?? "",
+      "email": email ?? "",
       "address": "",
       "photo": photo ?? "",
       "caption": "",
     });
 
-    final response = await http.post(
-      url,
+    return await sendRequest(
+      url: url,
       headers: headers,
+      method: clientMethod.method,
       body: body,
     );
+  }
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return true;
-    } else {
-      throw Exception('Failed to add client');
+  Future<bool?> sendRequest({
+    required Uri url,
+    required Map<String, String> headers,
+    required String method,
+    String? body,
+  }) async {
+    try {
+      http.Request request = http.Request(method, url);
+      request.headers.addAll(headers);
+      if (body != null) {
+        request.body = body;
+      }
+
+      final response = await request.send();
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log('Request successful: ${await response.stream.bytesToString()}');
+        return true;
+      } else {
+        log('Error in request: ${response.reasonPhrase}');
+        throw Exception('Request failed');
+      }
+    } catch (e) {
+      log('Exception in request: $e');
+      throw Exception('Failed to complete request');
     }
   }
 
   Future<bool?> deleteClient(String token, String id) async {
-    final String url =
-        'https://myback-execute-dot-my-back-401316.uc.r.appspot.com/6-tots-test/clients/$id';
-    final Map<String, String> headers = {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json'
-    };
+    return await sendRequest(
+      url: Uri.parse('$baseUrl/clients/$id'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      method: ClientMethod.delete.method,
+    );
+  }
 
-    try {
-      final http.Request request = http.Request(
-        "DELETE",
-        Uri.parse(url),
-      );
-
-      request.headers.addAll(headers);
-      http.StreamedResponse response = await request.send();
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        String responseBody = await response.stream.bytesToString();
-
-        log('Cliente eliminado exitosamente: $responseBody');
-      } else {
-        log('Error al eliminar el cliente: ${response.reasonPhrase}');
-        throw Exception('Failed to delete client');
-      }
-    } catch (e) {
-      log('Excepción al intentar eliminar el cliente: $e');
-      throw Exception('Failed to delete client');
-    }
-    return null;
+  Future<bool?> updateClient({
+    required String token,
+    required String id,
+    required String firstName,
+    required String lastName,
+    required String email,
+    String? photo,
+  }) async {
+    return await requestServer(
+      token: token,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      clientMethod: ClientMethod.update,
+      id: id,
+      photo: photo,
+    );
   }
 }
