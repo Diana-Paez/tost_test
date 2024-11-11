@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:flutter_test_tots/app/core/utils/responsive_screen.dart';
@@ -17,11 +16,7 @@ class _LoadingPageState extends State<LoadingPage>
   late List<AnimationController> animationControllers;
 
   late Animation<double> animationImage;
-  late Animation<double> animationImageTwo;
-  late Animation<double> opacityAnimation;
   late List<Animation<double>> animations;
-
-  late bool shouldReverse;
 
   @override
   void initState() {
@@ -52,32 +47,29 @@ class _LoadingPageState extends State<LoadingPage>
           CurvedAnimation(parent: controller, curve: Curves.decelerate));
     }).toList();
 
-    shouldReverse = false;
-
     for (int i = 0; i < animationControllers.length; i++) {
       Future.delayed(Duration(milliseconds: i * 80), () {
-        animationControllers[i].forward();
+        if (mounted) {
+          animationControllers[i].forward();
+        }
       });
     }
 
-    animationControllers[animationControllers.length - 3]
-        .addStatusListener((status) {
+    animationControllers.last.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         for (int i = 0; i < animationControllers.length; i++) {
           Future.delayed(Duration(milliseconds: i * 80), () {
-            animationControllers[i].reverse();
+            if (mounted) {
+              animationControllers[i].reverse();
+            }
           });
         }
-        shouldReverse = false;
-      }
-    });
-
-    animationControllers[animationControllers.length - 3]
-        .addStatusListener((status) {
-      if (status == AnimationStatus.dismissed) {
+      } else if (status == AnimationStatus.dismissed) {
         for (int i = 0; i < animationControllers.length; i++) {
           Future.delayed(Duration(milliseconds: i * 80), () {
-            animationControllers[i].forward();
+            if (mounted) {
+              animationControllers[i].forward();
+            }
           });
         }
       }
@@ -97,10 +89,7 @@ class _LoadingPageState extends State<LoadingPage>
   Widget build(BuildContext context) {
     final width = getUsableScreenDimension(context, ScreenDimension.width);
     final height = getUsableScreenDimension(context, ScreenDimension.height);
-
     final theme = Theme.of(context);
-
-    MediaQuery.viewPaddingOf(context).top;
 
     return Scaffold(
       backgroundColor:
@@ -123,16 +112,18 @@ class _LoadingPageState extends State<LoadingPage>
                       children: List.generate(
                         10,
                         (index) => AnimatedBuilder(
-                            animation: animationControllers[index],
-                            builder: (context, child) {
-                              return Transform.rotate(
-                                angle: 0.628319 * index,
-                                child: Transform.translate(
-                                    offset: Offset(
-                                        0, -height * animations[index].value),
-                                    child: const Circle()),
-                              );
-                            }),
+                          animation: animationControllers[index],
+                          builder: (context, child) {
+                            return Transform.rotate(
+                              angle: 0.628319 * index,
+                              child: Transform.translate(
+                                offset: Offset(
+                                    0, -height * animations[index].value),
+                                child: const Circle(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -140,22 +131,24 @@ class _LoadingPageState extends State<LoadingPage>
                 Column(
                   children: [
                     AnimatedBuilder(
-                        animation: animationControllerImage,
-                        builder: (context, child) {
-                          return SizedBox(
-                            width: width * 0.4830917874,
-                            height: height * 0.2347417840,
-                          );
-                        }),
+                      animation: animationControllerImage,
+                      builder: (context, child) {
+                        return SizedBox(
+                          width: width * 0.4830917874,
+                          height: height * 0.2347417840,
+                        );
+                      },
+                    ),
                     SizedBox(height: height * 0.05342723),
                     Text(
                       "Cargando...",
                       style: GoogleFonts.dmSans(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12,
-                          letterSpacing: width * 0.0064102564,
-                          color: const Color(0xFF0D1111).withOpacity(0.85)),
-                    )
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                        letterSpacing: width * 0.0064102564,
+                        color: const Color(0xFF0D1111).withOpacity(0.85),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -168,22 +161,18 @@ class _LoadingPageState extends State<LoadingPage>
 }
 
 class Circle extends StatelessWidget {
-  const Circle({
-    super.key,
-  });
+  const Circle({super.key});
 
   @override
   Widget build(BuildContext context) {
     final width = getUsableScreenDimension(context, ScreenDimension.width);
-
     final theme = Theme.of(context);
-    return Transform.translate(
-      offset: const Offset(0, 0),
-      child: Container(
-        height: width * 0.0323091787,
-        width: width * 0.0323091787,
-        decoration: BoxDecoration(
-            color: theme.colorScheme.primary, shape: BoxShape.circle),
+    return Container(
+      height: width * 0.0323091787,
+      width: width * 0.0323091787,
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primary,
+        shape: BoxShape.circle,
       ),
     );
   }
